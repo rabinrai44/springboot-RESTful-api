@@ -1,0 +1,166 @@
+{
+  "items": [
+    {
+      "itemNo": "ZS-10001",
+      "title": "MacBook Pro",
+      "description": "Apple MacBook Pro 13.3-Inch Laptop with Retina Display",
+      "unitPrice": 1299.99,
+      "minOrderQty": 1,
+      "maxOrderQty": 10,
+      "imageUrl": "http://ecx.images-amazon.com/images/I/41jQoH4y%2BKL._SX425_.jpg",
+      "inStock": true,
+      "countryId": 1,
+      "vendorId": 1,
+      "categoryId": 1
+    },
+    {
+      "itemNo": "ZS-10002",
+      "title": "MacBook Air",
+      "description": "Apple MacBook Air MD760LL/B 13.3-Inch Laptop",
+      "unitPrice": 999.99,
+      "minOrderQty": 1,
+      "maxOrderQty": 10,
+      "imageUrl": "http://ecx.images-amazon.com/images/I/41jQoH4y%2BKL._SX425_.jpg",
+      "inStock": true,
+      "countryId": 1,
+      "vendorId": 1,
+      "categoryId": 1
+    },
+    {
+      "itemNo": "ZS-10003",
+      "title": "MacBook",
+      "description": "Apple MacBook Pro 13.3-Inch Laptop with Retina Display",
+      "unitPrice": 1299.99,
+      "minOrderQty": 1,
+      "maxOrderQty": 10,
+      "imageUrl": "http://ecx.images-amazon.com/images/I/41jQoH4y%2BKL._SX425_.jpg",
+      "inStock": true,
+      "countryId": 1,
+      "vendorId": 1,
+      "categoryId": 1
+    },
+    {
+      "itemNo": "ZS-10004",
+      "title": "MacBook Pro",
+      "description": "Apple MacBook Pro 13.3-Inch Laptop with Retina Display",
+      "unitPrice": 1299.99,
+      "minOrderQty": 1,
+      "maxOrderQty": 10,
+      "imageUrl": "http://images-na.ssl-images-amazon.com/images/I/41jQoH4y%2BKL._SX425_.jpg",
+      "inStock": true,
+      "countryId": 1,
+      "vendorId": 1,
+      "categoryId": 1
+    },
+    {
+      "itemNo": "ZS-10005",
+      "title": "2nd Generation Airpods",
+      "description": "Apple AirPods with Charging Case (Latest Model)",
+      "unitPrice": 159.99,
+      "minOrderQty": 1,
+      "maxOrderQty": 4,
+      "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/71NTi82uBEL._SX522_.jpg",
+      "inStock": true,
+      "countryId": 1,
+      "vendorId": 1,
+      "categoryId": 1
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "description": "Electronics products"
+    },
+    {
+      "id": 2,
+      "name": "Computers",
+      "description": "Computers products"
+    },
+    {
+      "id": 3,
+      "name": "Accessories",
+      "description": "Accessories products"
+    }
+  ],
+  "vendors": [
+    {
+      "id": 1,
+      "name": "Apple",
+      "description": "Apple Inc."
+    },
+    {
+      "id": 2,
+      "name": "Samsung",
+      "description": "Samsung Inc."
+    },
+    {
+      "id": 3,
+      "name": "Microsoft",
+      "description": "Microsoft Inc."
+    },
+    {
+      "id": 4,
+      "name": "Google",
+      "description": "Google Inc."
+    },
+    {
+      "id": 5,
+      "name": "Amazon",
+      "description": "Amazon Inc."
+    },
+    {
+      "id": 6,
+      "name": "Dell",
+      "description": "Dell Inc."
+    },
+    {
+      "id": 7,
+      "name": "HP",
+      "description": "HP Inc."
+    },
+    {
+      "id": 8,
+      "name": "Lenovo",
+      "description": "Lenovo Inc."
+    },
+    {
+      "id": 9,
+      "name": "Asus",
+      "description": "Asus Inc."
+    },
+    {
+      "id": 10,
+      "name": "Acer",
+      "description": "Acer Inc."
+    }
+  ],
+  "countries": [
+    {
+      "id": 1,
+      "name": "United States",
+      "code": "US",
+      "description": "United States of America"
+    },
+    {
+      "id": 2,
+      "name": "Canada",
+      "code": "CA",
+      "description": "Canada"
+    }
+  ],
+  "users": [
+    {
+      "firstName": "John",
+      "lastName": "Smith",
+      "email": "johnsmith@yahoo.com",
+      "password": "123456"
+    },
+    {
+      "firstName": "Kendra",
+      "lastName": "Kendrick",
+      "email": "kendrajk@yahoocom",
+      "password": "123456"
+    }
+  ]
+}
