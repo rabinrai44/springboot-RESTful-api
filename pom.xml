@@ -13,7 +13,7 @@
 	<artifactId>samplerestapi</artifactId>
 	<version>0.0.1</version>
 	<name>Sample REST API</name>
-	<description>RESTful API with multi data sources sample project built in Spring boot framework</description>
+	<description>Sample RESTful API to demostrates how to use Spring Boot to create a RESTful API.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
