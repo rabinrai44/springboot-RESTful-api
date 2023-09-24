@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sample.webrestapi.dto.AddItem;
 import com.sample.webrestapi.model.Item;
+import com.sample.webrestapi.service.ContentData;
 import com.sample.webrestapi.service.WebDataService;
 
 @RestController
@@ -17,19 +18,21 @@ import com.sample.webrestapi.service.WebDataService;
 public class WebController {
 
     private final WebDataService repository;
+    private final ContentData contentData;
 
-    public WebController(WebDataService repository) {
+    public WebController(WebDataService repository, ContentData contentData) {
         this.repository = repository;
+        this.contentData = contentData;
     }
 
     @GetMapping("/items")
     public List<Item> getItems() {
-        return repository.getItems();
+        return contentData.getItems();
     }
 
     @GetMapping("/items/{itemNo}")
     public Item getItem(String itemNo) {
-        return repository.getItem(itemNo);
+        return contentData.getItem(itemNo);
     }
 
     @PostMapping("/items")
@@ -47,7 +50,7 @@ public class WebController {
         item.setVendorId(itemDto.getVendorId());
         item.setCategoryId(itemDto.getCategoryId());
 
-        repository.createItem(item);
+        contentData.createItem(item);
     }
 
 }

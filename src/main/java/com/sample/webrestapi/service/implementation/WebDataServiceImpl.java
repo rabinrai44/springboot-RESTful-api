@@ -15,9 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sample.webrestapi.common.AppConstants;
 import com.sample.webrestapi.mapper.CountryRowMapper;
-import com.sample.webrestapi.mapper.ItemRowMapper;
 import com.sample.webrestapi.model.Country;
-import com.sample.webrestapi.model.Item;
 import com.sample.webrestapi.service.WebDataService;
 
 @Repository
@@ -30,80 +28,6 @@ public class WebDataServiceImpl implements WebDataService, AutoCloseable {
     public WebDataServiceImpl(@Qualifier(AppConstants.JDBC_TEMPLATE_WEB) JdbcTemplate jdbcTemplate) {
         this.jdbc = jdbcTemplate;
         this.dataSource = jdbcTemplate.getDataSource();
-    }
-
-    @Override
-    public void createItem(Item item) {
-        try {
-            this.jdbc.update(
-                    "INSERT INTO dbo.item (itemNo, title, description, unitPrice, minOrderQty, mxOrderQty, inStock, imageUrl, vendorId, categoryId, countryId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    item.getItemNo(),
-                    item.getTitle(),
-                    item.getDescription(),
-                    item.getUnitPrice(),
-                    item.getMinOrderQty(),
-                    item.getMaxOrderQty(),
-                    item.isInStock(),
-                    item.getImageUrl(),
-                    item.getVendorId(),
-                    item.getCategoryId(),
-                    item.getCountryId());
-
-        } catch (Exception e) {
-            logger.error("Error creating item", e);
-        }
-    }
-
-    @Override
-    public void updateItem(Item item) {
-        try {
-            this.jdbc.update(
-                    "UPDATE item SET title = ?, description = ?, unitPrice = ?, minOrderQty = ?, mxOrderQty = ?, inStock = ?, imageUrl = ?, vendorId = ?, categoryId = ?, countryId = ? WHERE itemNo = ?",
-                    item.getTitle(),
-                    item.getDescription(),
-                    item.getUnitPrice(),
-                    item.getMinOrderQty(),
-                    item.getMaxOrderQty(),
-                    item.isInStock(),
-                    item.getImageUrl(),
-                    item.getVendorId(),
-                    item.getCountryId());
-        } catch (Exception e) {
-            logger.error("Error updating item", e);
-        }
-    }
-
-    @Override
-    public void deleteItem(String itemNo) {
-        try {
-            this.jdbc.update("DELETE FROM item WHERE itemNo = ?", itemNo);
-        } catch (Exception e) {
-            logger.error("Error deleting item", e);
-        }
-    }
-
-    @Override
-    public Item getItem(String itemNo) {
-        try {
-            return this.jdbc.query("SELECT * FROM item WHERE itemNo = ?", new ItemRowMapper(), itemNo)
-                    .stream().findFirst().orElseThrow();
-        } catch (EmptyResultDataAccessException e) {
-            logger.error("Error getting item", e);
-            return null;
-        } catch (Exception e) {
-            logger.error("", e);
-            return null;
-        }
-    }
-
-    @Override
-    public List<Item> getItems() {
-        try {
-            return this.jdbc.query("SELECT * FROM dbo.item", new ItemRowMapper());
-        } catch (Exception e) {
-            logger.error("Error getting items", e);
-            return new ArrayList<>();
-        }
     }
 
     @Override
