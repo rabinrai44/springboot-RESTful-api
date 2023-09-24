@@ -4,18 +4,18 @@ public class Country extends BaseDomain {
     private String code;
     private String name;
 
-    public Country(int id, String name, String code) {
+    public Country(Long id, String name, String code) {
         super(id);
         this.name = name;
         this.code = code;
     }
 
     public Country() {
-        this(0, "", "");
+        this("", "");
     }
 
     public Country(String name, String code) {
-        this(0, name, code);
+        this(null, name, code);
     }
 
     public String getCode() {

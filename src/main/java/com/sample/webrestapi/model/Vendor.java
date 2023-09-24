@@ -4,7 +4,7 @@ public class Vendor extends BaseDomain implements Comparable<Vendor> {
     private String name;
     private String description;
 
-    public Vendor(int id, String name, String description) {
+    public Vendor(Long id, String name, String description) {
         super(id);
         this.name = name;
         this.description = description;
@@ -15,7 +15,7 @@ public class Vendor extends BaseDomain implements Comparable<Vendor> {
     }
 
     public Vendor(String name, String description) {
-        super(0);
+        super(null);
         this.name = name;
         this.description = description;
     }

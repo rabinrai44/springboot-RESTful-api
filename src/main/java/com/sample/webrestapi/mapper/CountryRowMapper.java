@@ -14,7 +14,7 @@ public class CountryRowMapper implements RowMapper<Country> {
     @Nullable
     public Country mapRow(ResultSet rs, int rowNum) throws SQLException {
         Country country = new Country();
-        country.setId(rs.getInt("id"));
+        country.setId(rs.getLong("id"));
         country.setName(rs.getString("name"));
         country.setCode(rs.getString("code"));
 

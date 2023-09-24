@@ -29,7 +29,7 @@ CREATE UNIQUE INDEX `email_UNIQUE` ON `dbo.user` (`email` ASC) VISIBLE;
 -- Table `dbweb`.`country`
 -- ---------------------------
 CREATE TABLE IF NOT EXISTS `dbo.country` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `code` VARCHAR(10) NOT NULL,
     `description` VARCHAR(255),
@@ -75,6 +75,7 @@ CREATE UNIQUE INDEX `id_UNIQUE` ON `dbo.cartItem` (`id` ASC) VISIBLE;
 -- ---------------------------
 -- Schema dbcontent
 -- ---------------------------
+DROP SCHEMA IF EXISTS `dbcontent`;
 CREATE SCHEMA IF NOT EXISTS `dbcontent` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 
 USE `dbcontent`;
@@ -82,7 +83,7 @@ USE `dbcontent`;
 -- Table `dbcontent`.`dbo.item`
 -- ---------------------------
 CREATE TABLE IF NOT EXISTS `dbo.item` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `itemNo` VARCHAR(100) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
     `description` VARCHAR(256),
@@ -105,7 +106,7 @@ CREATE UNIQUE INDEX `itemNo_UNIQUE` ON `dbo.item` (`itemNo` ASC) VISIBLE;
 -- Table `dbcontent`.`dbo.category`
 -- ---------------------------
 CREATE TABLE IF NOT EXISTS `dbo.category` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `description` VARCHAR(255),
     `createdDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -119,7 +120,7 @@ CREATE UNIQUE INDEX `name_UNIQUE` ON `dbo.category` (`name` ASC) VISIBLE;
 -- Table `dbcontent`.`vendor`
 -- ---------------------------
 CREATE TABLE IF NOT EXISTS `dbo.vendor` (
-    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `id` BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
     `description` VARCHAR(255),
     `createdDate` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -131,4 +132,3 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- ---------------------------
 -- INSERT DATA
 -- ---------------------------
-

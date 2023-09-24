@@ -4,14 +4,14 @@ public class Category extends BaseDomain implements Comparable<Category> {
     private String name;
     private String description;
 
-    public Category(int id, String name, String description) {
+    public Category(Long id, String name, String description) {
         super(id);
         this.name = name;
         this.description = description;
     }
 
     public Category(String name, String description) {
-        super(0);
+        super(null);
         this.name = name;
         this.description = description;
     }

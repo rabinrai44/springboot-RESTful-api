@@ -3,21 +3,21 @@ package com.sample.webrestapi.model;
 import java.time.LocalDateTime;
 
 public abstract class BaseDomain {
-    protected int id;
+    protected Long id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 
-    public BaseDomain(int id) {
+    public BaseDomain(Long id) {
         this.id = id;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

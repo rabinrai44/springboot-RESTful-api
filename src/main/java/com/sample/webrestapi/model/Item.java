@@ -16,7 +16,7 @@ public class Item extends BaseDomain implements Comparable<Item> {
     private int categoryId;
 
     public Item() {
-        super(0);
+        super(null);
         itemNo = "";
         title = "";
         description = "";
