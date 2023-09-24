@@ -7,24 +7,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.sample.webrestapi.common.AppConstants;
 
 @Configuration
-public class WebDataSource {
-    private static final String DBWEB = "dbweb";
+public class ContentDataSource {
+    private static final String DBCONTENT = "dbcontent";
 
-    @Bean(DBWEB)
-    @Primary
-    @ConfigurationProperties("spring.datasource.dbweb")
+    @Bean(DBCONTENT)
+    @ConfigurationProperties("spring.datasource.dbcontent")
     public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
-    @Bean(AppConstants.JDBC_TEMPLATE_WEB)
-    public JdbcTemplate jdbcTemplate(@Qualifier(DBWEB) DataSource dataSource) {
+    @Bean(AppConstants.JDBC_TEMPLATE_CONTENT)
+    public JdbcTemplate jdbcTemplate(@Qualifier(DBCONTENT) DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 }
