@@ -14,7 +14,12 @@ CREATE PROCEDURE spAddUser(
     IN lastName VARCHAR(45),
     IN email VARCHAR(100),
     IN password VARCHAR(100),
-    IN phone VARCHAR(45)
+    IN phone VARCHAR(12),
+    IN title VARCHAR(100),
+    IN bio VARCHAR(255),
+    IN imageUrl VARCHAR(255),
+    IN enabled TINYINT(1),
+    IN isNotLocked TINYINT(1),
 )
 BEGIN
     DECLARE userCount INT DEFAULT 0;
@@ -47,8 +52,8 @@ BEGIN
     END IF;
     
     -- Insert the user into the database if all validations pass
-      INSERT INTO users (firstName, lastName, email, password, phone)
-      VALUES (firstName, lastName, email, password, phone);
+      INSERT INTO users (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked)
+      VALUES (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked);
 END$$
 
 DELIMITER ;
