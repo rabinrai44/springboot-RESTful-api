@@ -1,18 +1,19 @@
 package com.sample.webrestapi.controller;
 
-import java.util.UUID;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.sample.webrestapi.dto.AppUserAdd;
+import com.sample.webrestapi.dto.AppUserDto;
 import com.sample.webrestapi.model.AppUser;
-import com.sample.webrestapi.repository.UserRepository;
+import com.sample.webrestapi.service.UserService;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -20,23 +21,25 @@ public class UserController {
     private static final Logger logger = (Logger) LogManager.getLogger(UserController.class);
 
     @Autowired
-    private UserRepository<AppUser> userRepository;
+    private UserService userService;
 
-    @RequestMapping("{id}")
-    public AppUser getUserById(@PathVariable String id) {
-        UUID userId = null;
+    @PostMapping("/register")
+    public AppUserDto getUserById(@RequestBody AppUserAdd userDto) {
+        AppUser user = new AppUser();
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        user.setPassword(userDto.getPassword());
+        user.setPhone(userDto.getPhone());
+        user.setTitle(userDto.getTitle());
+        user.setBio(userDto.getBio());
+        user.setImageUrl(userDto.getImageUrl());
+
         try {
-            userId = UUID.fromString(id);
+            return userService.createUser(user);
         } catch (Exception e) {
-            logger.error("Error getting user", e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user id format");
+            logger.error("Error creating user", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating user");
         }
-
-        AppUser user = userRepository.get(userId);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-
-        return user;
     }
 }

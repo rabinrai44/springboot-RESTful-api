@@ -47,13 +47,18 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     public AppUser save(AppUser user) {
         try {
             this.jdbc.update(
-                    "INSERT INTO dbo.user (id, firstName, lastName, email, password, phone) VALUES (?, ?, ?, ?, ?, ?)",
-                    user.getId(),
+                    "CALL spAddUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     user.getFirstName(),
                     user.getLastName(),
                     user.getEmail(),
                     user.getPassword(),
-                    user.getPhone());
+                    user.getPhone(),
+                    user.getTitle(),
+                    user.getBio(),
+                    user.getImageUrl(),
+                    user.isEnabled(),
+                    user.isNotLocked());
+
             return user;
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error saving user", e);

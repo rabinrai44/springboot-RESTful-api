@@ -18,7 +18,12 @@ public class AppUserRowMapper implements RowMapper<AppUser> {
                 rs.getString("lastName"),
                 rs.getString("email"),
                 null,
-                rs.getString("phone"));
+                rs.getString("phone"),
+                rs.getString("title"),
+                rs.getString("bio"),
+                rs.getString("imageUrl"),
+                rs.getBoolean("enabled"),
+                rs.getBoolean("isNotLocked"));
     }
 
 }
