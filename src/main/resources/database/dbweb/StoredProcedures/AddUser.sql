@@ -19,7 +19,7 @@ CREATE PROCEDURE spAddUser(
     IN bio VARCHAR(255),
     IN imageUrl VARCHAR(255),
     IN enabled TINYINT(1),
-    IN isNotLocked TINYINT(1),
+    IN isNotLocked TINYINT(1)
 )
 BEGIN
     DECLARE userCount INT DEFAULT 0;

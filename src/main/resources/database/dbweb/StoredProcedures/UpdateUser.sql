@@ -19,7 +19,7 @@ CREATE PROCEDURE `spUpdateUser`(
     IN bio VARCHAR(255),
     IN imageUrl VARCHAR(255),
     IN enabled TINYINT(1),
-    IN isNotLocked TINYINT(1),
+    IN isNotLocked TINYINT(1)
 )
 BEGIN
 
