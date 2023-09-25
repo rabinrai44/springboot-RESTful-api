@@ -9,7 +9,7 @@ DROP PROCEDURE IF EXISTS `spUpdateUser`;
 DELIMITER $$
 
 CREATE PROCEDURE `spUpdateUser`(
-    IN pId INT,
+    IN pId VARCHAR(36),
     IN pFirstName VARCHAR(50),
     IN pEmail VARCHAR(50),
     IN pPassword VARCHAR(50),
@@ -43,7 +43,7 @@ BEGIN
         email = pEmail,
         password = pPassword,
         phone = pPone,
-        updatedDate = NOW()
+        updatedAt = NOW()
     WHERE Id = pId;
 END$$
 
