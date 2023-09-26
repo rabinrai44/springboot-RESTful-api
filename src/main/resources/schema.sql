@@ -27,9 +27,9 @@ USE `dbcontent` ;
 USE `dbweb` ;
 
 -- -----------------------------------------------------
--- Table `dbweb`.`dbo.cart`
+-- Table `dbweb`.`cart`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`dbo.cart` (
+CREATE TABLE IF NOT EXISTS `dbweb`.`cart` (
   `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
   `userId` VARCHAR(36) NOT NULL,
   `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -42,9 +42,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`dbo.cart_item`
+-- Table `dbweb`.`cart_item`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`dbo.cart_item` (
+CREATE TABLE IF NOT EXISTS `dbweb`.`cart_item` (
   `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
   `cartId` VARCHAR(36) NOT NULL,
   `itemNo` VARCHAR(55) NOT NULL,
@@ -59,9 +59,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`dbo.country`
+-- Table `dbweb`.`country`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`dbo.country` (
+CREATE TABLE IF NOT EXISTS `dbweb`.`country` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `code` VARCHAR(10) NOT NULL,
@@ -76,15 +76,20 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`dbo.user`
+-- Table `dbweb`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`dbo.user` (
+CREATE TABLE IF NOT EXISTS `dbweb`.`user` (
   `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
   `firstName` VARCHAR(100) NOT NULL,
   `lastName` VARCHAR(100) NULL DEFAULT NULL,
   `email` VARCHAR(100) NOT NULL,
   `phone` VARCHAR(100) NULL DEFAULT NULL,
   `password` VARCHAR(255) NOT NULL,
+  `title` VARCHAR(100) NULL DEFAULT NULL,
+  `bio` VARCHAR(255) NULL DEFAULT NULL,
+  `imageUrl` VARCHAR(255) NULL DEFAULT NULL,
+  `enabled` TINYINT(1) NULL DEFAULT NULL,
+  `isNotLocked` TINYINT(1) NULL DEFAULT NULL,
   `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -112,7 +117,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Name cannot be empty';
     END IF;
     
-    INSERT INTO `dbo.category` (
+    INSERT INTO `category` (
         name,
         description
         )
@@ -169,7 +174,7 @@ BEGIN
 
 
 
-    INSERT INTO `dbo.item`
+    INSERT INTO `item`
     (
         itemNo,
         title,
@@ -275,7 +280,7 @@ BEGIN
     END IF;
 
     -- Check if category exists
-    IF NOT EXISTS(SELECT * FROM `dbo.category` WHERE id = id) THEN
+    IF NOT EXISTS(SELECT * FROM `category` WHERE id = id) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Category does not exist';
     END IF;
@@ -286,7 +291,7 @@ BEGIN
     END IF;
     
     -- Update category
-    UPDATE `dbo.category` SET
+    UPDATE `category` SET
         name = name,
         description = description,
         updatedDate = NOW()
