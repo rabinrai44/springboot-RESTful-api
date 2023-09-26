@@ -58,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
                     user.getImageUrl(),
                     user.isEnabled(),
                     user.isNotLocked());
-
+            logger.info("User saved successfully");
             return user;
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error saving user", e);
@@ -73,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     public Collection<AppUser> list(int page, int pageSize) {
         try {
             // do pagination
-            String sql = "SELECT * FROM dbo.user ORDER BY id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            String sql = "SELECT * FROM user ORDER BY id OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             return this.jdbc.query(sql, new AppUserRowMapper(), page, pageSize);
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error getting users", e);
@@ -84,10 +84,10 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     @Override
     public AppUser get(UUID id) {
         try {
-            return this.jdbc.query("SELECT * FROM `dbo.user` WHERE id = ?", new AppUserRowMapper(), id)
+            return this.jdbc.query("CALL spGetUserById(?)", new AppUserRowMapper(), id)
                     .stream()
                     .findFirst()
-                    .orElseThrow();
+                    .orElse(null);
         } catch (EmptyResultDataAccessException e) {
             logger.error("", e);
         } catch (Exception e) {
@@ -101,13 +101,18 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     public AppUser update(AppUser user) {
         try {
             this.jdbc.update(
-                    "UPDATE dbo.user SET firstName = ?, lastName = ?, email = ?, password = ?, phone = ? WHERE id = ?",
+                    "CALL spUpdateUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    user.getId(),
                     user.getFirstName(),
                     user.getLastName(),
                     user.getEmail(),
                     user.getPassword(),
                     user.getPhone(),
-                    user.getId());
+                    user.getTitle(),
+                    user.getBio(),
+                    user.getImageUrl(),
+                    user.isEnabled(),
+                    user.isNotLocked());
             return user;
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error updating user", e);
@@ -121,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     @Override
     public Boolean delete(UUID id) {
         try {
-            return this.jdbc.update("DELETE FROM dbo.user WHERE id = ?", id) > 0;
+            return this.jdbc.update("DELETE FROM user WHERE id = ?", id) > 0;
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error deleting user", e);
         } catch (Exception e) {
