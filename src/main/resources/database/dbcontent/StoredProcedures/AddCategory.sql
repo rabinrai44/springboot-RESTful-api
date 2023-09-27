@@ -19,7 +19,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Name cannot be empty';
     END IF;
     
-    INSERT INTO `dbo.category` (
+    INSERT INTO `categories` (
         name,
         description
         )

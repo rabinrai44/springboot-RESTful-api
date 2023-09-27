@@ -4,11 +4,11 @@ Created On: 8/24/2023
 Description: Create table for item
 */
 -- ---------------------------
--- Table `dbcontent`.`dbo.item`
+-- Table items
 -- ---------------------------
-DROP TABLE IF EXISTS `dbo.item` ;
+DROP TABLE IF EXISTS items ;
 
-CREATE TABLE IF NOT EXISTS `dbo.item` (
+CREATE TABLE IF NOT EXISTS items (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     itemNo VARCHAR(100) NOT NULL,
     title VARCHAR(100) NOT NULL,
@@ -25,4 +25,4 @@ CREATE TABLE IF NOT EXISTS `dbo.item` (
     updatedAt DATETIME DEFAULT NULL
 )
 
-CREATE UNIQUE INDEX `item_itemNo_uindex` ON `dbo.item` (`itemNo` ASC) VISIBLE;
+CREATE UNIQUE INDEX item_itemNo_uindex ON items (itemNo ASC) VISIBLE;

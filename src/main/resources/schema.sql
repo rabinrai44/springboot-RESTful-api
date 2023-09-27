@@ -1,9 +1,16 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
 -- Schema dbcontent
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `dbcontent` ;
 
 -- -----------------------------------------------------
 -- Schema dbcontent
@@ -12,34 +19,84 @@ CREATE SCHEMA IF NOT EXISTS `dbcontent` DEFAULT CHARACTER SET utf8mb4 COLLATE ut
 -- -----------------------------------------------------
 -- Schema dbweb
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `dbweb` ;
 
 -- -----------------------------------------------------
 -- Schema dbweb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `dbweb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `dbcontent` ;
-USE `dbweb` ;
 
 -- -----------------------------------------------------
--- Table `dbweb`.`cart`
+-- Table `dbcontent`.`categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`cart` (
-  `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
-  `userId` VARCHAR(36) NOT NULL,
+DROP TABLE IF EXISTS `dbcontent`.`categories` ;
+
+CREATE TABLE IF NOT EXISTS `dbcontent`.`categories` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(255) NULL DEFAULT NULL,
   `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`cart_item`
+-- Table `dbcontent`.`items`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`cart_item` (
-  `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
+DROP TABLE IF EXISTS `dbcontent`.`items` ;
+
+CREATE TABLE IF NOT EXISTS `dbcontent`.`items` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `itemNo` VARCHAR(100) NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(256) NULL DEFAULT NULL,
+  `unitPrice` DECIMAL(10,2) NOT NULL,
+  `inStock` TINYINT(1) NOT NULL,
+  `minOrderQty` INT NOT NULL,
+  `maxOrderQty` INT NOT NULL,
+  `imageUrl` VARCHAR(255) NULL DEFAULT NULL,
+  `vendorId` INT NULL DEFAULT NULL,
+  `categoryId` INT NULL DEFAULT NULL,
+  `countryId` INT NOT NULL,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `item_itemNo_uindex` (`itemNo` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `dbcontent`.`vendors`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dbcontent`.`vendors` ;
+
+CREATE TABLE IF NOT EXISTS `dbcontent`.`vendors` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(255) NULL DEFAULT NULL,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+USE `dbweb` ;
+
+-- -----------------------------------------------------
+-- Table `dbweb`.`cart_items`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dbweb`.`cart_items` ;
+
+CREATE TABLE IF NOT EXISTS `dbweb`.`cart_items` (
+  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
   `cartId` VARCHAR(36) NOT NULL,
   `itemNo` VARCHAR(55) NOT NULL,
   `quantity` INT NOT NULL,
@@ -53,9 +110,28 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`country`
+-- Table `dbweb`.`carts`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`country` (
+DROP TABLE IF EXISTS `dbweb`.`carts` ;
+
+CREATE TABLE IF NOT EXISTS `dbweb`.`carts` (
+  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
+  `userId` VARCHAR(36) NOT NULL,
+  `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` DATETIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `dbweb`.`countries`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dbweb`.`countries` ;
+
+CREATE TABLE IF NOT EXISTS `dbweb`.`countries` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `code` VARCHAR(10) NOT NULL,
@@ -70,20 +146,22 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `dbweb`.`user`
+-- Table `dbweb`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dbweb`.`user` (
-  `id` VARCHAR(36) NOT NULL DEFAULT (UUID()),
+DROP TABLE IF EXISTS `dbweb`.`users` ;
+
+CREATE TABLE IF NOT EXISTS `dbweb`.`users` (
+  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
   `firstName` VARCHAR(100) NOT NULL,
   `lastName` VARCHAR(100) NULL DEFAULT NULL,
   `email` VARCHAR(100) NOT NULL,
-  `phone` VARCHAR(100) NULL DEFAULT NULL,
+  `phone` VARCHAR(12) NULL DEFAULT NULL,
   `password` VARCHAR(255) NOT NULL,
   `title` VARCHAR(100) NULL DEFAULT NULL,
   `bio` VARCHAR(255) NULL DEFAULT NULL,
   `imageUrl` VARCHAR(255) NULL DEFAULT NULL,
-  `enabled` TINYINT(1) NULL DEFAULT NULL,
-  `isNotLocked` TINYINT(1) NULL DEFAULT NULL,
+  `enabled` TINYINT(1) NOT NULL DEFAULT '1',
+  `isNotLocked` TINYINT(1) NOT NULL DEFAULT '1',
   `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -98,9 +176,11 @@ USE `dbcontent` ;
 -- procedure spAddCategory
 -- -----------------------------------------------------
 
+USE `dbcontent`;
+DROP procedure IF EXISTS `dbcontent`.`spAddCategory`;
+
 DELIMITER $$
 USE `dbcontent`$$
-DROP PROCEDURE IF EXISTS `spAddCategory`$$
 CREATE PROCEDURE `spAddCategory`(
     IN _name VARCHAR(100),
     IN _description VARCHAR(255)
@@ -112,7 +192,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Name cannot be empty';
     END IF;
     
-    INSERT INTO `category` (
+    INSERT INTO `categories` (
         name,
         description
         )
@@ -125,9 +205,11 @@ DELIMITER ;
 -- procedure spAddItem
 -- -----------------------------------------------------
 
+USE `dbcontent`;
+DROP procedure IF EXISTS `dbcontent`.`spAddItem`;
+
 DELIMITER $$
 USE `dbcontent`$$
-DROP PROCEDURE IF EXISTS `spAddItem`$$
 CREATE PROCEDURE `spAddItem`(
     IN _itemNo VARCHAR(50),
     IN _title VARCHAR(100),
@@ -170,7 +252,7 @@ BEGIN
 
 
 
-    INSERT INTO `item`
+    INSERT INTO `items`
     (
         itemNo,
         title,
@@ -207,9 +289,11 @@ DELIMITER ;
 -- procedure spDeleteCategory
 -- -----------------------------------------------------
 
+USE `dbcontent`;
+DROP procedure IF EXISTS `dbcontent`.`spDeleteCategory`;
+
 DELIMITER $$
 USE `dbcontent`$$
-DROP PROCEDURE IF EXISTS `spDeleteCategory`$$
 CREATE PROCEDURE `spDeleteCategory`(
     IN _categoryId INT
 )
@@ -221,14 +305,14 @@ BEGIN
     END IF;
 
     -- Validation 
-    IF (SELECT COUNT(*) FROM category WHERE categoryId = _categoryId) = 0 THEN
+    IF (SELECT COUNT(*) FROM categories WHERE id = _categoryId) = 0 THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Category does not exist';
     END IF;
 
     -- Delete category
     DELETE FROM category 
-    WHERE categoryId = _categoryId;
+    WHERE id = _categoryId;
 END$$
 
 DELIMITER ;
@@ -237,9 +321,11 @@ DELIMITER ;
 -- procedure spDeleteItem
 -- -----------------------------------------------------
 
+USE `dbcontent`;
+DROP procedure IF EXISTS `dbcontent`.`spDeleteItem`;
+
 DELIMITER $$
 USE `dbcontent`$$
-DROP PROCEDURE IF EXISTS `spDeleteItem`$$
 CREATE PROCEDURE `spDeleteItem`(IN _itemNo INT)
 BEGIN
     -- Validation
@@ -248,12 +334,12 @@ BEGIN
     END IF;
 
     -- Check if exists in item table
-    IF NOT EXISTS(SELECT * FROM item WHERE itemNo = _itemNo) THEN
+    IF NOT EXISTS(SELECT * FROM items WHERE itemNo = _itemNo) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'itemNo does not exist in item table';
     END IF;
 
     -- Delete from item table
-    DELETE FROM item WHERE itemNo = _itemNo;
+    DELETE FROM items WHERE itemNo = _itemNo;
 END$$
 
 DELIMITER ;
@@ -262,9 +348,11 @@ DELIMITER ;
 -- procedure spUpdateCategory
 -- -----------------------------------------------------
 
+USE `dbcontent`;
+DROP procedure IF EXISTS `dbcontent`.`spUpdateCategory`;
+
 DELIMITER $$
 USE `dbcontent`$$
-DROP PROCEDURE IF EXISTS `spUpdateCategory`$$
 CREATE PROCEDURE `spUpdateCategory`(
     IN _id INT,
     IN _name VARCHAR(100),
@@ -279,7 +367,7 @@ BEGIN
     END IF;
 
     -- Check if category exists
-    IF NOT EXISTS(SELECT * FROM `category` WHERE id = _id) THEN
+    IF NOT EXISTS(SELECT * FROM categories WHERE id = _id) THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Category does not exist';
     END IF;
@@ -290,7 +378,7 @@ BEGIN
     END IF;
     
     -- Update category
-    UPDATE `category` SET
+    UPDATE categories SET
         name = _name,
         description = _description,
         updatedDate = NOW()
@@ -305,9 +393,11 @@ USE `dbweb` ;
 -- procedure spAddUser
 -- -----------------------------------------------------
 
+USE `dbweb`;
+DROP procedure IF EXISTS `dbweb`.`spAddUser`;
+
 DELIMITER $$
 USE `dbweb`$$
-DROP PROCEDURE IF EXISTS `spAddUser`$$
 CREATE PROCEDURE `spAddUser`(
     IN _firstName VARCHAR(45),
     IN _lastName VARCHAR(45),
@@ -355,12 +445,63 @@ END$$
 DELIMITER ;
 
 -- -----------------------------------------------------
--- procedure spUpdateUser
+-- procedure spGetUserByEmail
 -- -----------------------------------------------------
+
+USE `dbweb`;
+DROP procedure IF EXISTS `dbweb`.`spGetUserByEmail`;
 
 DELIMITER $$
 USE `dbweb`$$
-DROP PROCEDURE IF EXISTS `spUpdateUser`$$
+CREATE PROCEDURE `spGetUserByEmail`(
+    IN _email VARCHAR(100),
+    OUT _userCount INT
+)
+BEGIN 
+    IF _email IS NOT NULL OR _email != '' THEN
+        SET _email = LOWER(_email);
+        SELECT * FROM user WHERE email = _email;
+        SELECT FOUND_ROWS() INTO _userCount;
+    ELSE 
+        SET _userCount = 0;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure spGetUserById
+-- -----------------------------------------------------
+
+USE `dbweb`;
+DROP procedure IF EXISTS `dbweb`.`spGetUserById`;
+
+DELIMITER $$
+USE `dbweb`$$
+CREATE PROCEDURE `spGetUserById`(
+    IN _id VARCHAR(100),
+    OUT _userCount INT
+)
+BEGIN 
+    IF _id IS NOT NULL OR _id != '' THEN
+        SELECT * FROM user WHERE id = _id;
+        SELECT FOUND_ROWS() INTO _userCount;
+    ELSE 
+        SET _userCount = 0;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure spUpdateUser
+-- -----------------------------------------------------
+
+USE `dbweb`;
+DROP procedure IF EXISTS `dbweb`.`spUpdateUser`;
+
+DELIMITER $$
+USE `dbweb`$$
 CREATE PROCEDURE `spUpdateUser`(
     IN _id VARCHAR(36),
     IN _firstName VARCHAR(50),
@@ -401,7 +542,7 @@ DECLARE userCount INT;
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Password cannot be null';
     END IF;
 
-    UPDATE user SET
+    UPDATE users SET
         firstName = _firstName,
         
         email = _email,
@@ -418,45 +559,6 @@ END$$
 
 DELIMITER ;
 
--- -----------------------------------------------------
--- procedure spGetUserByEmail
--- -----------------------------------------------------
-DELIMITER $$
-USE `dbweb`$$
-DROP PROCEDURE IF EXISTS `spGetUserByEmail`$$
-CREATE PROCEDURE `spGetUserByEmail`(
-    IN _email VARCHAR(100),
-    OUT _userCount INT
-)
-BEGIN 
-    IF _email IS NOT NULL OR _email != '' THEN
-        SET _email = LOWER(_email);
-        SELECT * FROM user WHERE email = _email;
-        SELECT FOUND_ROWS() INTO _userCount;
-    ELSE 
-        SET _userCount = 0;
-    END IF;
-END$$
-
-DELIMITER ;
-
--- -----------------------------------------------------
--- procedure spGetUserById
--- -----------------------------------------------------
-DELIMITER $$
-USE `dbweb`$$
-DROP PROCEDURE IF EXISTS `spGetUserById`$$
-CREATE PROCEDURE `spGetUserById`(
-    IN _id VARCHAR(100),
-    OUT _userCount INT
-)
-BEGIN 
-    IF _id IS NOT NULL OR _id != '' THEN
-        SELECT * FROM user WHERE id = _id;
-        SELECT FOUND_ROWS() INTO _userCount;
-    ELSE 
-        SET _userCount = 0;
-    END IF;
-END$$
-
-DELIMITER ;
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

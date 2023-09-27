@@ -33,7 +33,7 @@ public class WebDataServiceImpl implements WebDataService, AutoCloseable {
     @Override
     public List<Country> getCountries() {
         try {
-            return this.jdbc.query("SELECT * FROM dbo.country", new CountryRowMapper());
+            return this.jdbc.query("SELECT * FROM countries", new CountryRowMapper());
         } catch (Exception e) {
             logger.error("Error getting countries", e);
             return new ArrayList<>();
@@ -43,7 +43,7 @@ public class WebDataServiceImpl implements WebDataService, AutoCloseable {
     @Override
     public Country getCountry(String countryCode) {
         try {
-            return this.jdbc.query("SELECT * FROM dbo.country WHERE code = ?", new CountryRowMapper(), countryCode)
+            return this.jdbc.query("SELECT * FROM countries WHERE code = ?", new CountryRowMapper(), countryCode)
                     .stream().findFirst().orElseThrow();
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error getting country", e);

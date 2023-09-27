@@ -49,7 +49,7 @@ public class ContentDataService implements ContentData, AutoCloseable {
     public void updateItem(Item item) {
         try {
             this.jdbc.update(
-                    "UPDATE item SET title = ?, description = ?, unitPrice = ?, minOrderQty = ?, mxOrderQty = ?, inStock = ?, imageUrl = ?, vendorId = ?, categoryId = ?, countryId = ? WHERE itemNo = ?",
+                    "UPDATE items SET title = ?, description = ?, unitPrice = ?, minOrderQty = ?, mxOrderQty = ?, inStock = ?, imageUrl = ?, vendorId = ?, categoryId = ?, countryId = ? WHERE itemNo = ?",
                     item.getTitle(),
                     item.getDescription(),
                     item.getUnitPrice(),
@@ -67,7 +67,7 @@ public class ContentDataService implements ContentData, AutoCloseable {
     @Override
     public void deleteItem(String itemNo) {
         try {
-            this.jdbc.update("DELETE FROM item WHERE itemNo = ?", itemNo);
+            this.jdbc.update("DELETE FROM items WHERE itemNo = ?", itemNo);
         } catch (Exception e) {
             logger.error("Error deleting item", e);
         }
@@ -76,7 +76,7 @@ public class ContentDataService implements ContentData, AutoCloseable {
     @Override
     public Item getItem(String itemNo) {
         try {
-            return this.jdbc.query("SELECT * FROM item WHERE itemNo = ?", new ItemRowMapper(), itemNo)
+            return this.jdbc.query("SELECT * FROM items WHERE itemNo = ?", new ItemRowMapper(), itemNo)
                     .stream().findFirst().orElseThrow();
         } catch (EmptyResultDataAccessException e) {
             logger.error("Error getting item", e);
@@ -90,7 +90,7 @@ public class ContentDataService implements ContentData, AutoCloseable {
     @Override
     public List<Item> getItems() {
         try {
-            return this.jdbc.query("SELECT * FROM dbo.item", new ItemRowMapper());
+            return this.jdbc.query("SELECT * FROM items", new ItemRowMapper());
         } catch (Exception e) {
             logger.error("Error getting items", e);
             return new ArrayList<>();

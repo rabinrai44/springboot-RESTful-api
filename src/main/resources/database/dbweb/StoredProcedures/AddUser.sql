@@ -1,6 +1,7 @@
 -- ======================================
 -- Author:		Rabin Rai
--- Create date: 	2023-09-22
+-- Created On: 	2023-09-22
+-- Updated On: 	9
 -- Description:	Stored Procedure for Add a new User
 -- version:		1.0
 -- ======================================
@@ -23,37 +24,34 @@ CREATE PROCEDURE spAddUser(
 )
 BEGIN
     DECLARE userCount INT DEFAULT 0;
-    
     -- Validate firstName
-    IF firstName IS NULL OR LENGTH(firstName) = 0 OR firstName = '' THEN
+    IF _firstName IS NULL OR LENGTH(_firstName) = 0 OR _firstName = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'First name cannot be empty';
     END IF;
 
     -- Validate email
-    IF email IS NULL OR email = '' THEN
+    IF _email IS NULL OR _email = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Email cannot be empty';
     END IF;
 
-    -- Check if a user with the given email already exists
-    IF email IS NOT NULL THEN
-        SELECT COUNT(*) INTO userCount FROM users WHERE email = email;
-        IF userCount > 0 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = 'A user with the same email already exists';
-        END IF;
-    END IF;    
-
     -- Validate password
-    IF password IS NULL OR LENGTH(password) = 0 OR password = '' THEN
+    IF _password IS NULL OR LENGTH(_password) = 0 OR _password = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Password cannot be empty';
     END IF;
-    
+
+    -- Check if the email already exists using spGetUserByEmail
+    CALL spGetUserByEmail(_email, userCount);
+    IF  userCount > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'A user with the same email already exists';
+    END IF;
+
     -- Insert the user into the database if all validations pass
-      INSERT INTO users (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked)
-      VALUES (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked);
+    INSERT INTO user (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked)
+    VALUES (_firstName, _lastName, _email, _password, _phone, _title, _bio, _imageUrl, _enabled, _isNotLocked);
 END$$
 
 DELIMITER ;

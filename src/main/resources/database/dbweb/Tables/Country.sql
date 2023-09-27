@@ -1,7 +1,8 @@
 -- ---------------------------
--- Table `dbweb`.`country`
+-- Table countries
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS `dbo.country` (
+DROP TABLE IF EXISTS countries;
+CREATE TABLE IF NOT EXISTS countries (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     code VARCHAR(10) NOT NULL,
@@ -10,4 +11,4 @@ CREATE TABLE IF NOT EXISTS `dbo.country` (
     updatedAt DATETIME
 );
 
-CREATE UNIQUE INDEX `code_UNIQUE` ON `dbo.country` (`code` ASC) VISIBLE;
+CREATE UNIQUE INDEX code_UNIQUE ON countries (code ASC) VISIBLE;

@@ -51,7 +51,7 @@ BEGIN
 
 
 
-    INSERT INTO `dbo.item`
+    INSERT INTO `items`
     (
         itemNo,
         title,

@@ -5,11 +5,11 @@ Description: Create table for Vendor
 */
 
 -- ---------------------------
--- Table `dbcontent`.`vendor`
+-- Table vendors
 -- ---------------------------
-DROP TABLE IF EXISTS `dbo.vendor`;
+DROP TABLE IF EXISTS vendors;
 
-CREATE TABLE IF NOT EXISTS `dbo.vendor` (
+CREATE TABLE IF NOT EXISTS vendors (
     id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(255),
