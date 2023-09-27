@@ -23,6 +23,6 @@ CREATE TABLE IF NOT EXISTS items (
     countryId INT NOT NULL,
     createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT NULL
-)
+);
 
 CREATE UNIQUE INDEX item_itemNo_uindex ON items (itemNo ASC) VISIBLE;

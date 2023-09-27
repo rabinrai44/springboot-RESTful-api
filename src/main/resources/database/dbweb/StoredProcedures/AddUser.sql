@@ -1,7 +1,7 @@
 -- ======================================
 -- Author:		Rabin Rai
 -- Created On: 	2023-09-22
--- Updated On: 	9
+-- Updated On: 	2023-09-26
 -- Description:	Stored Procedure for Add a new User
 -- version:		1.0
 -- ======================================

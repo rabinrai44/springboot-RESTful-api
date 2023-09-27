@@ -1,6 +1,7 @@
 /*
 Author: Rabin Rai
-Created On: 8/23/2023
+Created On: 2023-09-22
+Updated On: 2023-09-26
 Description: Stored procedure to update User
 Version: 1.0
 */

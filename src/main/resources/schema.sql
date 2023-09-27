@@ -96,7 +96,7 @@ USE `dbweb` ;
 DROP TABLE IF EXISTS `dbweb`.`cart_items` ;
 
 CREATE TABLE IF NOT EXISTS `dbweb`.`cart_items` (
-  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
+  `id` VARCHAR(36) NOT NULL DEFAULT (uuid()),
   `cartId` VARCHAR(36) NOT NULL,
   `itemNo` VARCHAR(55) NOT NULL,
   `quantity` INT NOT NULL,
@@ -115,7 +115,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `dbweb`.`carts` ;
 
 CREATE TABLE IF NOT EXISTS `dbweb`.`carts` (
-  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
+  `id` VARCHAR(36) NOT NULL DEFAULT (uuid()),
   `userId` VARCHAR(36) NOT NULL,
   `createdAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` DATETIME NULL DEFAULT NULL,
@@ -151,7 +151,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 DROP TABLE IF EXISTS `dbweb`.`users` ;
 
 CREATE TABLE IF NOT EXISTS `dbweb`.`users` (
-  `id` VARCHAR(36) NOT NULL DEFAULT uuid(),
+  `id` VARCHAR(36) NOT NULL DEFAULT (uuid()),
   `firstName` VARCHAR(100) NOT NULL,
   `lastName` VARCHAR(100) NULL DEFAULT NULL,
   `email` VARCHAR(100) NOT NULL,
