@@ -1,35 +1,56 @@
 package com.sample.webrestapi.model;
 
-import java.util.UUID;
+import java.math.BigDecimal;
 
-public class CartItem extends DataObject implements Comparable<CartItem> {
+public class CartItem extends BaseDomain implements Comparable<CartItem> {
     private String itemNo;
-    private Item item;
     private int quantity;
-    private UUID cartId;
+    private BigDecimal price;
+    private Long cartId;
 
-    public CartItem(UUID id, String name, Item item, int quantity, UUID cartId) {
-        super(id, name);
-        this.item = item;
-        this.itemNo = item.getItemNo();
+    public CartItem(Long id, Long cartId, String itemNo, int quantity, BigDecimal price) {
+        super(id);
+        this.itemNo = itemNo;
+        this.cartId = cartId;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public CartItem(Long cartId, String itemNo, int quantity, BigDecimal price) {
+        super(null);
+        this.itemNo = itemNo;
+        this.quantity = quantity;
+        this.price = price;
         this.cartId = cartId;
     }
 
-    public CartItem(Item item, int quantity, UUID cartId) {
-        super(null, item.getItemNo());
-        this.item = item;
-        this.itemNo = item.getItemNo();
-        this.quantity = quantity;
-        this.cartId = cartId;
+    @Override
+    public int compareTo(CartItem o) {
+        return this.itemNo.compareTo(o.itemNo);
     }
 
-    public Item getItem() {
-        return item;
+    @Override
+    public boolean equals(Object arg0) {
+        // TODO Auto-generated method stub
+        return super.equals(arg0);
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    @Override
+    public int hashCode() {
+        return this.itemNo.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem [itemNo=" + itemNo + ", quantity=" + quantity + "]";
+    }
+
+    public String getItemNo() {
+        return itemNo;
+    }
+
+    public void setItemNo(String itemNo) {
+        this.itemNo = itemNo;
     }
 
     public int getQuantity() {
@@ -40,45 +61,20 @@ public class CartItem extends DataObject implements Comparable<CartItem> {
         this.quantity = quantity;
     }
 
-    @Override
-    public int compareTo(CartItem o) {
-        return this.item.compareTo(o.item);
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof CartItem) {
-            CartItem other = (CartItem) obj;
-            return this.item.equals(other.item) && this.quantity == other.quantity;
-        }
-
-        return false;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    @Override
-    public int hashCode() {
-        return this.item.hashCode() + this.quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "CartItem [item=" + item + ", quantity=" + quantity + "]";
-    }
-
-    public String getItemNo() {
-        return itemNo;
-    }
-
-    public UUID getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(UUID cartId) {
+    public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
 
-    public void setItemNo(String itemNo) {
-        this.itemNo = itemNo;
+    public Long getCartId() {
+        return cartId;
     }
 
 }

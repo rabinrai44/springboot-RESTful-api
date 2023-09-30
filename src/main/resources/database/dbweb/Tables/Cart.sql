@@ -5,13 +5,14 @@ Updated On: 9/26/2023
 Description: Create table for cart
 */
 -- ---------------------------
--- Table carts
+-- Table cart
 -- ---------------------------
-CREATE TABLE IF NOT EXISTS carts (
-    id VARCHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
-    userId VARCHAR(36) NOT NULL,
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT NULL
+DROP TABLE IF EXISTS `cart`;
+CREATE TABLE `cart` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `userId` binary(16) NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_cart_userId` (`userId`)
 );
-
-CREATE UNIQUE INDEX id_UNIQUE ON carts (id ASC) VISIBLE;

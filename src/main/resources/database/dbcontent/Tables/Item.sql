@@ -6,23 +6,23 @@ Description: Create table for item
 -- ---------------------------
 -- Table items
 -- ---------------------------
-DROP TABLE IF EXISTS items ;
+DROP TABLE IF EXISTS item;
 
-CREATE TABLE IF NOT EXISTS items (
-    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    itemNo VARCHAR(100) NOT NULL,
-    title VARCHAR(100) NOT NULL,
-    description VARCHAR(256),
-    unitPrice DECIMAL(10,2) NOT NULL,
-    inStock BOOLEAN NOT NULL,
-    minOrderQty INT NOT NULL,
-    maxOrderQty INT NOT NULL,
-    imageUrl VARCHAR(255),
-    vendorId INT,
-    categoryId INT,
-    countryId INT NOT NULL,
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME DEFAULT NULL
+CREATE TABLE `item` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `itemNo` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `unitPrice` decimal(10,2) NOT NULL,
+  `inStock` tinyint(1) NOT NULL,
+  `minOrderQty` int NOT NULL,
+  `maxOrderQty` int NOT NULL,
+  `imageUrl` varchar(255) DEFAULT NULL,
+  `vendorId` int DEFAULT NULL,
+  `categoryId` int DEFAULT NULL,
+  `countryId` int NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `itemNo` (`itemNo`)
 );
-
-CREATE UNIQUE INDEX item_itemNo_uindex ON items (itemNo ASC) VISIBLE;

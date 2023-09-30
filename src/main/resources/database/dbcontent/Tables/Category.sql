@@ -6,16 +6,16 @@ Description: Create table for Category
 */
 
 -- ---------------------------
--- Table categories
+-- Table category
 -- ---------------------------
-DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS category;
 
-CREATE TABLE IF NOT EXISTS categories (
-    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255),
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME
+CREATE TABLE `category` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name_UNIQUE` (`name`)
 );
-
-CREATE UNIQUE INDEX name_UNIQUE ON categories (name ASC) VISIBLE;
