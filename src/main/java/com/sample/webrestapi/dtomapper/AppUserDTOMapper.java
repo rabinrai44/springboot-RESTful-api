@@ -1,6 +1,5 @@
 package com.sample.webrestapi.dtomapper;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.sample.webrestapi.dto.AppUserDto;

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.sample.webrestapi.common.AppConstants;
 
@@ -22,7 +22,7 @@ public class ContentDataSource {
     }
 
     @Bean(AppConstants.JDBC_TEMPLATE_CONTENT)
-    public JdbcTemplate jdbcTemplate(@Qualifier(DBCONTENT) DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    public NamedParameterJdbcTemplate jdbcTemplate(@Qualifier(DBCONTENT) DataSource dataSource) {
+        return new NamedParameterJdbcTemplate(dataSource);
     }
 }

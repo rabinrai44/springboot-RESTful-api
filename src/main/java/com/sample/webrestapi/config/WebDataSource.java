@@ -8,7 +8,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.sample.webrestapi.common.AppConstants;
 
@@ -24,7 +24,8 @@ public class WebDataSource {
     }
 
     @Bean(AppConstants.JDBC_TEMPLATE_WEB)
-    public JdbcTemplate jdbcTemplate(@Qualifier(DBWEB) DataSource dataSource) {
-        return new JdbcTemplate(dataSource);
+    @Primary
+    public NamedParameterJdbcTemplate jdbcTemplate(@Qualifier(DBWEB) DataSource dataSource) {
+        return new NamedParameterJdbcTemplate(dataSource);
     }
 }

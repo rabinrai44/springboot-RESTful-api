@@ -12,8 +12,10 @@ public class AppUserRowMapper implements RowMapper<AppUser> {
 
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+        byte[] bytes = rs.getBytes("id"); // Assuming the column name is 'id'
+        UUID userId = bytes != null ? UUID.nameUUIDFromBytes(bytes) : null;
         return new AppUser(
-                UUID.fromString(rs.getString("id")),
+                userId,
                 rs.getString("firstName"),
                 rs.getString("lastName"),
                 rs.getString("email"),
