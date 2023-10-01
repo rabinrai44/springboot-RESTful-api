@@ -16,3 +16,13 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `role_name_unique` (`name`)
 );
+
+
+-- ----------------------------
+-- Records of role
+-- ----------------------------
+INSERT INTO `role` (name, permission)
+ VALUES ('ROLE_USER', 'READ:USER,READ:CUSTOMER')
+        ,('ROLE_MANAGER', 'READ:USER,READ:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER')
+        ,('ROLE_ADMIN', 'READ:USER,READ:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER,DELETE:USER,DELETE:CUSTOMER')
+        ,('ROLE_SUPER_ADMIN', 'READ:USER,READ:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER,DELETE:USER,DELETE:CUSTOMER');
