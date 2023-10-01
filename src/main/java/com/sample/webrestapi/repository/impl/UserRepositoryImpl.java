@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import com.sample.webrestapi.common.AppConstants;
 import com.sample.webrestapi.exceptions.ApiException;
 import com.sample.webrestapi.mapper.AppUserRowMapper;
+import com.sample.webrestapi.mapper.UUIDRowMapper;
 import com.sample.webrestapi.model.AppUser;
 import com.sample.webrestapi.model.Role;
 import com.sample.webrestapi.query.UserQuery;
@@ -86,9 +87,9 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
             jdbc.update(UserQuery.INSERT_USER_QUERY, parameters);
 
             // Get the user id
-            // UUID userId = findByEmail(user.getEmail()).getId();
+            UUID userId = findUserIdByEmail(user.getEmail());
 
-            // user.setId(userId);
+            user.setId(userId);
             // // Add role to the user
             // roleRepository.addRoleToUser(userId, RoleType.ROLE_USER.name());
             logger.info("User saved successfully");
@@ -154,5 +155,10 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
         }
 
         return false;
+    }
+
+    @Override
+    public UUID findUserIdByEmail(String email) {
+        return jdbc.queryForObject(UserQuery.FIND_USER_ID_BY_EMAIL, Map.of("email", email), (new UUIDRowMapper()));
     }
 }

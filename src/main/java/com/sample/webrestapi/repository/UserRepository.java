@@ -17,4 +17,6 @@ public interface UserRepository<T extends AppUser> {
     T update(T user);
 
     Boolean delete(UUID id);
+
+    UUID findUserIdByEmail(String email);
 }

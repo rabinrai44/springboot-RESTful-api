@@ -8,5 +8,6 @@ public class UserQuery {
     public static final String LIST_USER_WITH_PAGE_QUERY = "SELECT * FROM user LIMIT :limit OFFSET :offset";
     public static final String DELETE_USER_QUERY = "SELECT * FROM user WHERE id = :id";
     public static final String FIND_USER_BY_ID_QUERY = "SELECT * FROM user WHERE id = :id";
+    public static final String FIND_USER_ID_BY_EMAIL = "SELECT id FROM user WHERE email = :email";
 
 }
