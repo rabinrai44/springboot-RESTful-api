@@ -1,16 +1,15 @@
 package com.sample.webrestapi.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public abstract class BaseDomain {
     protected Long id;
-    protected Date createdAt;
-    protected Date updatedAt;
+    protected LocalDateTime createdAt;
+    protected LocalDateTime updatedAt;
 
     public BaseDomain(Long id) {
         this.id = id;
-        this.createdAt = Date.from(LocalDateTime.now().toLocalDate().atStartOfDay().toInstant(null));
+        this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
     }
 
@@ -22,19 +21,15 @@ public abstract class BaseDomain {
         this.id = id;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
