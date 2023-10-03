@@ -19,7 +19,7 @@ BEGIN
     END IF;
 
     -- Validation 
-    IF (SELECT COUNT(*) FROM categories WHERE id = categoryId) = 0 THEN
+    IF (SELECT COUNT(*) FROM category WHERE id = categoryId) = 0 THEN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Category does not exist';
     END IF;

@@ -1,6 +1,6 @@
 package com.sample.webrestapi.model;
 
-public class Category extends BaseDomain implements Comparable<Category> {
+public class Category extends BaseDomain<Long> implements Comparable<Category> {
     private String name;
     private String description;
 

@@ -19,7 +19,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Name cannot be empty';
     END IF;
     
-    INSERT INTO `categories` (
+    INSERT INTO `category` (
         name,
         description
         )

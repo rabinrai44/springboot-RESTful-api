@@ -5,15 +5,13 @@ Updated On: 9/26/2023
 Description: Create table for cartItem
 */
 
-CREATE TABLE `cart_item` (
+CREATE TABLE `role` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `cartId` bigint unsigned NOT NULL,
-  `itemNo` varchar(55) NOT NULL,
-  `quantity` int NOT NULL DEFAULT '1',
-  `price` decimal(10,2) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `name` varchar(55) NOT NULL,
+  `permission` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `cart_item_cart_fk` (`cartId`),
-  CONSTRAINT `cart_item_cart_fk` FOREIGN KEY (`cartId`) REFERENCES `cart` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `role_name_unique` (`name`),
+  KEY `name` (`name`)
 );

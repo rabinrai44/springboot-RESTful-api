@@ -33,10 +33,9 @@ BEGIN
     END IF;
     
     -- Update category
-    UPDATE `dbo.category` SET
+    UPDATE `category` SET
         name = name,
-        description = description,
-        updatedDate = NOW()
+        description = description
     WHERE id = id;
 
 END$$

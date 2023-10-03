@@ -8,13 +8,14 @@ Description: Create table for user_role
 -- ---------------------------
 
 DROP TABLE IF EXISTS user_role;
-CREATE TABLE user_role (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `userId` BINARY(16) NOT NULL,
-  `roleId` BIGINT UNSIGNED NOT NULL,
-  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (userId) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (roleId) REFERENCES role (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT UQ_userRole_userId UNIQUE (userId)
+CREATE TABLE `user_role` (
+  `user_id` varchar(255) NOT NULL,
+  `role_id` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`),
+  KEY `FK_user_role_user_role_id` (`role_id`),
+  CONSTRAINT `FK_user_role_user_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `FK_user_user_role_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

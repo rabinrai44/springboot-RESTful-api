@@ -1,6 +1,6 @@
 package com.sample.webrestapi.model;
 
-public class Country extends BaseDomain {
+public class Country extends BaseDomain<Long> {
     private String code;
     private String name;
 

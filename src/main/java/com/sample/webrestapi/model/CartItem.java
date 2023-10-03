@@ -2,7 +2,7 @@ package com.sample.webrestapi.model;
 
 import java.math.BigDecimal;
 
-public class CartItem extends BaseDomain implements Comparable<CartItem> {
+public class CartItem extends BaseDomain<Long> implements Comparable<CartItem> {
     private String itemNo;
     private int quantity;
     private BigDecimal price;

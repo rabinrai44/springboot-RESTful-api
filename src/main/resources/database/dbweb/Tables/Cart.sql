@@ -9,10 +9,11 @@ Description: Create table for cart
 -- ---------------------------
 DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `userId` binary(16) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime DEFAULT NULL,
+  `id` varchar(255) NOT NULL DEFAULT (uuid()),
+  `user_id` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `UQ_cart_userId` (`userId`)
+  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+  CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );

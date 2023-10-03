@@ -2,22 +2,22 @@ package com.sample.webrestapi.model;
 
 import java.time.LocalDateTime;
 
-public abstract class BaseDomain {
-    protected Long id;
+public abstract class BaseDomain<T> {
+    protected T id;
     protected LocalDateTime createdAt;
     protected LocalDateTime updatedAt;
 
-    public BaseDomain(Long id) {
+    public BaseDomain(T id) {
         this.id = id;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
     }
 
-    public Long getId() {
+    public T getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(T id) {
         this.id = id;
     }
 

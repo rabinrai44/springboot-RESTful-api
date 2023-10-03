@@ -12,20 +12,18 @@ public class AppUserRowMapper implements RowMapper<AppUser> {
 
     @Override
     public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
-        byte[] bytes = rs.getBytes("id"); // Assuming the column name is 'id'
-        UUID userId = bytes != null ? UUID.nameUUIDFromBytes(bytes) : null;
         return new AppUser(
-                userId,
-                rs.getString("firstName"),
-                rs.getString("lastName"),
+                UUID.fromString(rs.getString("id")),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
                 rs.getString("email"),
                 null,
                 rs.getString("phone"),
                 rs.getString("title"),
                 rs.getString("bio"),
-                rs.getString("imageUrl"),
+                rs.getString("image_url"),
                 rs.getBoolean("enabled"),
-                rs.getBoolean("isNotLocked"));
+                rs.getBoolean("is_not_locked"));
     }
 
 }

@@ -5,14 +5,15 @@ Description: Create table for Vendor
 */
 
 -- ---------------------------
--- Table vendors
+-- Table vendor
 -- ---------------------------
-DROP TABLE IF EXISTS vendors;
+DROP TABLE IF EXISTS vendor;
 
-CREATE TABLE IF NOT EXISTS vendors (
-    id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(255),
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME
-)
+CREATE TABLE `vendor` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+);

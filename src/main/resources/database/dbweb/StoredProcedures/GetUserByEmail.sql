@@ -9,14 +9,12 @@ DROP PROCEDURE IF EXISTS `spGetUserByEmail`;
 
 DELIMITER $$
 CREATE PROCEDURE `spGetUserByEmail`(
-    IN _email VARCHAR(100),
-    OUT _userCount INT
+    IN _email VARCHAR(100)
 )
 BEGIN 
     IF _email IS NOT NULL OR _email != '' THEN
         SET _email = LOWER(_email);
         SELECT * FROM users WHERE email = _email;
-        SELECT FOUND_ROWS() INTO _userCount;
     ELSE 
         SET _userCount = 0;
     END IF;

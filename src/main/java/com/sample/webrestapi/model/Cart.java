@@ -3,11 +3,11 @@ package com.sample.webrestapi.model;
 import java.util.List;
 import java.util.UUID;
 
-public class Cart extends BaseDomain {
+public class Cart extends BaseDomain<UUID> {
     private UUID userId;
     private List<CartItem> items;
 
-    public Cart(Long id, UUID userId, List<CartItem> items) {
+    public Cart(UUID id, UUID userId, List<CartItem> items) {
         super(id);
         this.userId = userId;
         this.items = items;

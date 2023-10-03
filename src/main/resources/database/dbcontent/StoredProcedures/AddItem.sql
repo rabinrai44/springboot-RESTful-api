@@ -51,19 +51,19 @@ BEGIN
 
 
 
-    INSERT INTO `items`
+    INSERT INTO `item`
     (
-        itemNo,
+        item_no,
         title,
         description,
-        unitPrice,
-        inStock,
-        minOrderQty,
-        maxOrderQty,
-        imageUrl,
-        categoryId,
-        vendorId,
-        countryId
+        unit_price,
+        in_stock,
+        min_order_qty,
+        max_order_qty,
+        image_url,
+        category_id,
+        vendor_id,
+        country_id
     )
     VALUES
     (

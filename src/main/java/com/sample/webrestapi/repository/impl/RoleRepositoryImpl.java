@@ -12,7 +12,9 @@ import org.apache.logging.log4j.core.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.sample.webrestapi.common.AppConstants;
@@ -44,7 +46,6 @@ public class RoleRepositoryImpl implements RoleRepository<Role> {
         } catch (EmptyResultDataAccessException e) {
             logger.error("No roles found");
         } catch (Exception e) {
-
             logger.error("Error retrieving roles");
         }
 
@@ -73,11 +74,18 @@ public class RoleRepositoryImpl implements RoleRepository<Role> {
     public void addRoleToUser(UUID userId, String roleName) {
         logger.info("Adding role {} to user id: {}", roleName, userId);
         try {
-            Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName),
-                    new RoleRowMapper());
 
-            jdbc.update(RoleQuery.INSERT_ROLE_TO_USER_QUERY,
-                    Map.of("userId", userId, "roleId", role.getId(), "roleId", role.getId()));
+            Role role = findRoleByName(roleName);
+
+            if (role == null) {
+                logger.error("Role not found by name: {}", roleName);
+                throw new ApiException("Role not found by name: " + roleName);
+            }
+
+            logger.info("Role found: {}", role.getId());
+
+            jdbc.update(INSERT_ROLE_TO_USER_QUERY,
+                    Map.of("userId", userId.toString(), "roleId", role.getId().toString()));
         } catch (EmptyResultDataAccessException e) {
             logger.error("", e);
             throw new ApiException("Role not found by name: " + roleName);
@@ -110,6 +118,19 @@ public class RoleRepositoryImpl implements RoleRepository<Role> {
     public Role updateUserRole(UUID userId, String roleName) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateUserRole'");
+    }
+
+    @Override
+    public Role findRoleByName(String roleName) {
+        try {
+            return jdbc.queryForObject(RoleQuery.SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName),
+                    new RoleRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("", e);
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+        return null;
     }
 
 }

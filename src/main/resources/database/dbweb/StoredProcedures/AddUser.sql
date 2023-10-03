@@ -11,6 +11,7 @@ DROP PROCEDURE IF EXISTS `spAddUser`;
 DELIMITER $$
 
 CREATE PROCEDURE spAddUser(
+    IN id VARCHAR(255),
     IN firstName VARCHAR(45),
     IN lastName VARCHAR(45),
     IN email VARCHAR(100),
@@ -25,33 +26,46 @@ CREATE PROCEDURE spAddUser(
 BEGIN
     DECLARE userCount INT DEFAULT 0;
     -- Validate firstName
-    IF _firstName IS NULL OR LENGTH(_firstName) = 0 OR _firstName = '' THEN
+    IF firstName IS NULL OR LENGTH(firstName) = 0 OR firstName = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'First name cannot be empty';
     END IF;
 
     -- Validate email
-    IF _email IS NULL OR _email = '' THEN
+    IF email IS NULL OR email = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Email cannot be empty';
     END IF;
 
     -- Validate password
-    IF _password IS NULL OR LENGTH(_password) = 0 OR _password = '' THEN
+    IF password IS NULL OR LENGTH(password) = 0 OR password = '' THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Password cannot be empty';
     END IF;
 
     -- Check if the email already exists using spGetUserByEmail
-    CALL spGetUserByEmail(_email, userCount);
+    CALL spGetUserByEmail(email);
+    SELECT COUNT(*) INTO userCount;
     IF  userCount > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'A user with the same email already exists';
     END IF;
 
+    -- Check if id is not null or is not empty and is a valid uuid format if not then generate a new id
+    IF id IS NULL OR id = '' OR LENGTH(id) = 0 OR ELSEIF LENGTH(id) != 36  THEN
+        SET id = UUID();
+    END IF;
+
+
+    -- Check if the id is already taken
+    SELECT COUNT(*) INTO userCount FROM user WHERE id = id;
+   -- IF userCount > 0 THEN generate a new id
+        SET id = UUID();
+    END IF;
+
     -- Insert the user into the database if all validations pass
-    INSERT INTO user (firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked)
-    VALUES (_firstName, _lastName, _email, _password, _phone, _title, _bio, _imageUrl, _enabled, _isNotLocked);
+    INSERT INTO user (id, first_name, last_name, email, password, phone, title, bio, image_url, enabled, is_not_locked)
+    VALUES (id, firstName, lastName, email, password, phone, title, bio, imageUrl, enabled, isNotLocked);
 END$$
 
 DELIMITER ;

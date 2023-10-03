@@ -1,6 +1,6 @@
 package com.sample.webrestapi.model;
 
-public class Vendor extends BaseDomain implements Comparable<Vendor> {
+public class Vendor extends BaseDomain<Long> implements Comparable<Vendor> {
     private String name;
     private String description;
 

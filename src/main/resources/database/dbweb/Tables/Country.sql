@@ -7,8 +7,8 @@ CREATE TABLE `country` (
   `name` varchar(100) NOT NULL,
   `code` varchar(10) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `code_UNIQUE` (`code`)
+  UNIQUE KEY `code` (`code`)
 );

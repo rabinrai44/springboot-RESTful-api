@@ -25,4 +25,6 @@ public interface RoleRepository<T extends Role> {
     Role findRoleByUserEmail(String email);
 
     Role updateUserRole(UUID userId, String roleName);
+
+    Role findRoleByName(String roleName);
 }

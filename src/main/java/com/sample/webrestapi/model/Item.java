@@ -2,7 +2,7 @@ package com.sample.webrestapi.model;
 
 import java.math.BigDecimal;
 
-public class Item extends BaseDomain implements Comparable<Item> {
+public class Item extends BaseDomain<Long> implements Comparable<Item> {
     private String itemNo;
     private String title;
     private String description;

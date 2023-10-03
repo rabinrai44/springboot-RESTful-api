@@ -1,6 +1,8 @@
 package com.sample.webrestapi.model;
 
-public class Role extends BaseDomain {
+import java.util.UUID;
+
+public class Role extends BaseDomain<UUID> {
     private String name;
     private String permission;
 
@@ -12,7 +14,7 @@ public class Role extends BaseDomain {
         super(null);
     }
 
-    public Role(Long id) {
+    public Role(UUID id) {
         super(id);
     }
 

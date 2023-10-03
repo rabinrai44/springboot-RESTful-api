@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.sample.webrestapi.common.AppConstants;
+import com.sample.webrestapi.enumeration.RoleType;
 import com.sample.webrestapi.exceptions.ApiException;
 import com.sample.webrestapi.mapper.AppUserRowMapper;
 import com.sample.webrestapi.mapper.UUIDRowMapper;
@@ -83,15 +84,14 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
         }
 
         try {
+            // Get the user id
+            user.setId(generateUniqueId());
+
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UserQuery.INSERT_USER_QUERY, parameters);
 
-            // Get the user id
-            UUID userId = findUserIdByEmail(user.getEmail());
-
-            user.setId(userId);
             // // Add role to the user
-            // roleRepository.addRoleToUser(userId, RoleType.ROLE_USER.name());
+            roleRepository.addRoleToUser(user.getId(), RoleType.ROLE_USER.name());
             logger.info("User saved successfully");
             return user;
         } catch (EmptyResultDataAccessException e) {
@@ -105,10 +105,11 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
 
     private SqlParameterSource getSqlParameterSource(AppUser user) {
         return new MapSqlParameterSource()
-                .addValue("firstName", user.getFirstName())
-                .addValue("lastName", user.getLastName())
-                .addValue("email", user.getEmail())
-                .addValue("password", passwordEncoder.encode(user.getPassword()));
+                .addValue("id", user.getId().toString(), Types.VARCHAR)
+                .addValue("firstName", user.getFirstName(), Types.VARCHAR)
+                .addValue("lastName", user.getLastName(), Types.VARCHAR)
+                .addValue("email", user.getEmail(), Types.VARCHAR)
+                .addValue("password", passwordEncoder.encode(user.getPassword()), Types.VARCHAR);
     }
 
     @Override
@@ -160,5 +161,26 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
     @Override
     public UUID findUserIdByEmail(String email) {
         return jdbc.queryForObject(UserQuery.FIND_USER_ID_BY_EMAIL, Map.of("email", email), (new UUIDRowMapper()));
+    }
+
+    @Override
+    public UUID generateUniqueId() {
+        UUID uuid = UUID.randomUUID();
+        if (isIdTaken(uuid)) {
+            return generateUniqueId();
+        }
+        return uuid;
+    }
+
+    private boolean isIdTaken(UUID uuid) {
+        try {
+            return this.jdbc.queryForObject(UserQuery.FIND_USER_BY_ID_QUERY, Map.of("id", uuid.toString()),
+                    AppUser.class) != null;
+        } catch (EmptyResultDataAccessException e) {
+            logger.error("Error getting user", e);
+        } catch (Exception e) {
+            logger.error("Error getting user", e);
+        }
+        return false;
     }
 }

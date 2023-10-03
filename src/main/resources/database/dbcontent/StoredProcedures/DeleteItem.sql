@@ -16,12 +16,12 @@ BEGIN
     END IF;
 
     -- Check if exists in item table
-    IF NOT EXISTS(SELECT * FROM item WHERE itemNo = itemNo) THEN
+    IF NOT EXISTS(SELECT * FROM item WHERE item_no = itemNo) THEN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'itemNo does not exist in item table';
     END IF;
 
     -- Delete from item table
-    DELETE FROM item WHERE itemNo = itemNo;
+    DELETE FROM item WHERE item_no = itemNo;
 END$$
 
 DELIMITER ;
