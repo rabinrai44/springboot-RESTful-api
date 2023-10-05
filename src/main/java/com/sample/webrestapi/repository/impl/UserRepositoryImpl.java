@@ -18,6 +18,9 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -28,12 +31,13 @@ import com.sample.webrestapi.mapper.AppUserRowMapper;
 import com.sample.webrestapi.mapper.UUIDRowMapper;
 import com.sample.webrestapi.model.AppUser;
 import com.sample.webrestapi.model.Role;
+import com.sample.webrestapi.model.UserPrincipal;
 import com.sample.webrestapi.query.UserQuery;
 import com.sample.webrestapi.repository.RoleRepository;
 import com.sample.webrestapi.repository.UserRepository;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository<AppUser> {
+public class UserRepositoryImpl implements UserRepository<AppUser>, UserDetailsService {
 
     private static final Logger logger = (Logger) LogManager.getLogger(UserRepositoryImpl.class);
 
@@ -69,10 +73,14 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
             List<AppUser> users = (List<AppUser>) result.get("users");
 
             return users.stream().findFirst().orElse(null);
+        } catch (EmptyResultDataAccessException e) {
+            // Handle empty result
+            logger.error("No user found", e);
+            throw new ApiException("No user found with email: " + email + "");
         } catch (Exception e) {
             // Handle exceptions
-            logger.error("Error getting user", e);
-            throw new ApiException("Error getting user");
+            logger.error(e.getMessage());
+            throw new ApiException("An error occurred. Please try again later.");
         }
     }
 
@@ -182,5 +190,17 @@ public class UserRepositoryImpl implements UserRepository<AppUser> {
             logger.error("Error getting user", e);
         }
         return false;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        AppUser user = findByEmail(username);
+        if (user == null) {
+            logger.error("User not found with username: " + username);
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+
+        logger.info("User found");
+        return new UserPrincipal(user, roleRepository.findRoleByUserId(user.getId()).getPermission());
     }
 }

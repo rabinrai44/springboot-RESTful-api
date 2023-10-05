@@ -9,6 +9,8 @@ import org.apache.logging.log4j.core.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.sample.webrestapi.dto.AppUserAdd;
 import com.sample.webrestapi.dto.AppUserDto;
+import com.sample.webrestapi.dto.LoginRequest;
 import com.sample.webrestapi.model.AppUser;
 import com.sample.webrestapi.model.HttpResponse;
 import com.sample.webrestapi.service.UserService;
@@ -28,6 +31,27 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authManager;
+
+    @PostMapping("/login")
+    public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest request) {
+        var result = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+
+        logger.info("User was logged in successfully.");
+
+        return ResponseEntity.ok()
+                .body(
+                        HttpResponse.builder()
+                                .timeStamp(LocalDateTime.now().toString())
+                                .data(Map.of("authenticated", result.isAuthenticated()))
+                                .message("User logged in successfully")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build());
+    }
 
     @PostMapping("/register")
     public ResponseEntity<HttpResponse> saveUser(@RequestBody AppUserAdd userDto) {
