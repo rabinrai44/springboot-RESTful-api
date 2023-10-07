@@ -26,7 +26,17 @@ import com.sample.webrestapi.handler.CustomAuthenticationEntryPoint;
 @EnableMethodSecurity // prev EnableGlobalMethodSecurity
 public class WebSecurity {
 
-    private static final String[] PUBLIC_URLS = { "/api/v1/user/login/**", "/api/v1/user/register/**" };
+    private static final String[] PUBLIC_URLS = {
+            "/api/v1/user/login/**",
+            "/api/v1/user/register/**",
+            "/v2/api-docs/**",
+            "/v3/api-docs/**",
+            "/configuration/security",
+            "/swagger-resource",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+    };
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final UserDetailsService userDetailsService;
