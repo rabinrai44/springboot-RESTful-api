@@ -1,5 +1,8 @@
 package com.sample.webrestapi.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,17 +43,16 @@ public class WebSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf((csrf) -> csrf.disable()).cors((crs) -> crs.disable())
+        return http.csrf((csrf) -> csrf.disable()).cors((crs) -> crs.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests((requests) -> requests
+                .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/user/delete/**").hasAnyAuthority("DELETE:USER")
                         .requestMatchers(HttpMethod.DELETE, "/customer/delete/**").hasAnyAuthority("DELETE:CUSTOMER")
                         .anyRequest().authenticated())
                 .exceptionHandling((exception) -> exception.accessDeniedHandler(customAccessDeniedHandler)
-                        .authenticationEntryPoint(customAuthenticationEntryPoint));
-
-        return http.build();
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
+                .build();
     }
 
     @Bean
