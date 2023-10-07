@@ -21,6 +21,8 @@ import com.sample.webrestapi.dto.AppUserAdd;
 import com.sample.webrestapi.dto.LoginRequest;
 import com.sample.webrestapi.model.AppUser;
 import com.sample.webrestapi.model.HttpResponse;
+import com.sample.webrestapi.model.UserPrincipal;
+import com.sample.webrestapi.provider.TokenProvider;
 import com.sample.webrestapi.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +39,9 @@ public class UserController {
         @Autowired
         private AuthenticationManager authManager;
 
+        @Autowired
+        private TokenProvider tokenProvider;
+
         @Operation(summary = "User login", description = "User login with email and password. Returns JWT token if authenticated.", responses = {
                         @ApiResponse(responseCode = "200", description = "User logged in successfully"),
         })
@@ -45,15 +50,22 @@ public class UserController {
                 var result = authManager
                                 .authenticate(new UsernamePasswordAuthenticationToken(request.email(),
                                                 request.password()));
-                return ResponseEntity.ok()
-                                .body(
-                                                HttpResponse.builder()
-                                                                .timeStamp(getTimestamp())
-                                                                .data(Map.of("authenticated", result.isAuthenticated()))
-                                                                .message("User logged in successfully")
-                                                                .status(HttpStatus.OK)
-                                                                .statusCode(HttpStatus.OK.value())
-                                                                .build());
+
+                String accessToken = tokenProvider.createAccessToken((UserPrincipal) result.getPrincipal());
+                String refreshToken = tokenProvider.createRefreshToken((UserPrincipal) result.getPrincipal());
+                HttpResponse response = HttpResponse.builder()
+                                .timeStamp(getTimestamp())
+                                .data(Map.of("token_type", "Bearer",
+                                                "access_token", accessToken,
+                                                "expires_at", tokenProvider.getExpirationTime(accessToken),
+                                                "refresh_token", refreshToken,
+                                                "refresh_token_expires_at",
+                                                tokenProvider.getRefreshTokenExpirationTime(refreshToken)))
+                                .message("User logged in successfully")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build();
+                return ResponseEntity.ok().body(response);
         }
 
         @Operation(summary = "User registration", description = "User registration with email and password", responses = {
@@ -73,18 +85,16 @@ public class UserController {
                 userService.createUser(user);
 
                 return ResponseEntity.created(getURI("/api/v1/user/login"))
-                                .body(
-                                                HttpResponse.builder()
-                                                                .timeStamp(getTimestamp())
-                                                                .message("User created successfully")
-                                                                .status(HttpStatus.CREATED)
-                                                                .statusCode(HttpStatus.CREATED.value())
-                                                                .build());
+                                .body(HttpResponse.builder()
+                                                .timeStamp(getTimestamp())
+                                                .message("User created successfully")
+                                                .status(HttpStatus.CREATED)
+                                                .statusCode(HttpStatus.CREATED.value())
+                                                .build());
         }
 
         private URI getURI(String path) {
-                return URI.create(
-                                ServletUriComponentsBuilder.fromCurrentContextPath().path(path).toUriString());
+                return URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path(path).toUriString());
         }
 
         private String getTimestamp() {
