@@ -23,6 +23,9 @@ import com.sample.webrestapi.model.AppUser;
 import com.sample.webrestapi.model.HttpResponse;
 import com.sample.webrestapi.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -34,6 +37,9 @@ public class UserController {
         @Autowired
         private AuthenticationManager authManager;
 
+        @Operation(summary = "User login", description = "User login with email and password. Returns JWT token if authenticated.", responses = {
+                        @ApiResponse(responseCode = "200", description = "User logged in successfully"),
+        })
         @PostMapping("/login")
         public ResponseEntity<HttpResponse> login(@RequestBody LoginRequest request) {
                 var result = authManager
@@ -50,6 +56,9 @@ public class UserController {
                                                                 .build());
         }
 
+        @Operation(summary = "User registration", description = "User registration with email and password", responses = {
+                        @ApiResponse(responseCode = "201", description = "User created successfully"),
+        })
         @PostMapping("/register")
         public ResponseEntity<HttpResponse> saveUser(@RequestBody AppUserAdd userDto) {
                 AppUser user = new AppUser();
